@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/domain"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/domain"
 )
 
 type UserRepository interface {

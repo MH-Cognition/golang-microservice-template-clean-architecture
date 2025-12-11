@@ -4,8 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/domain"
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/repository"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/domain"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/repository"
+
 	"github.com/google/uuid"
 )
 

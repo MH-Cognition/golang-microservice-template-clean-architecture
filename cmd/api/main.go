@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/repository/inmemory"
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/transport/httptransport"
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/usecase"
+
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/repository/inmemory"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/transport/httptransport"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/usecase"
 )
 
 func main() {

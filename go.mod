@@ -1,4 +1,4 @@
-module github.com/MH-Cognition/mhc-backend-lms-identity-service.git
+module github.com/MH-Cognition/golang-microservice-template-clean-architecture
 
 go 1.22
 

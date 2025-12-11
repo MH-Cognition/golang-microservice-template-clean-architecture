@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/transport/dto"
-	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/usecase"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/transport/dto"
+	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/usecase"
 )
 
 type UserHandler struct {
