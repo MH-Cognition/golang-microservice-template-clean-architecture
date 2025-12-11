@@ -36,7 +36,6 @@ Key Code References
 -------------------
 Handler mapping:
 ```
-23:55:internal/transport/httptransport/user_handler.go
 func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
     var input dto.CreateUserRequest
     if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
@@ -58,7 +57,6 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 Use case (logic + repository interface):
 ```
-12:65:internal/usecase/user_usecase.go
 type UserUsecase struct { userRepo repository.UserRepository }
 ...
 func (uc *UserUsecase) CreateUser(ctx context.Context, input CreateUserInput) (*CreateUserOutput, error) {
@@ -71,7 +69,6 @@ func (uc *UserUsecase) CreateUser(ctx context.Context, input CreateUserInput) (*
 
 Domain entity + validation:
 ```
-8:26:internal/domain/user.go
 type User struct { ID string; Email string; ... }
 func (u *User) Validate() error {
     if u.Email == "" { return errors.New("email can't be empty") }
@@ -81,13 +78,11 @@ func (u *User) Validate() error {
 
 Repository interface and in-memory adapter:
 ```
-9:11:internal/repository/repository.go
 type UserRepository interface {
     CreateUser(ctx context.Context, user *domain.User) (*domain.User, error)
 }
 ```
 ```
-10:27:internal/repository/inmemory/user_repository.go
 type InMemoryUserRepository struct { mu sync.RWMutex; users []*domain.User }
 func (r *InMemoryUserRepository) CreateUser(ctx context.Context, user *domain.User) (*domain.User, error) {
     r.mu.Lock(); defer r.mu.Unlock()
@@ -98,7 +93,6 @@ func (r *InMemoryUserRepository) CreateUser(ctx context.Context, user *domain.Us
 
 Router and composition:
 ```
-9:14:internal/transport/httptransport/router.go
 func NewRouter(h *UserHandler) http.Handler {
     mux := http.NewServeMux()
     mux.HandleFunc("/users/register/", h.Create)
@@ -106,7 +100,6 @@ func NewRouter(h *UserHandler) http.Handler {
 }
 ```
 ```
-11:22:cmd/api/main.go
 func main() {
     userRepo := inmemory.NewInMemoryUserRepository()
     userUC := usecase.NewUserUsecase(userRepo)
