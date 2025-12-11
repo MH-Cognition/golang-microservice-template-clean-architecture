@@ -1,4 +1,4 @@
-Identity Service (Clean Architecture Template)
+Golang (Clean Architecture Template)
 ===============================================
 
 Overview
