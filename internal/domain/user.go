@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"errors"
+	"time"
+)
 
 type User struct {
 	ID         string
@@ -11,4 +14,13 @@ type User struct {
 	IsActive   bool
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+}
+
+//domain behaviour
+func (u *User) Validate() error {
+	if u.Email == "" {
+		return errors.New("email can't be empty")
+	} 
+
+	return nil
 }

@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/repository/inmemory"
-	httptransport "github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/transport/http"
+	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/transport/httptransport"
 	"github.com/MH-Cognition/mhc-backend-lms-identity-service.git/internal/usecase"
 )
 
