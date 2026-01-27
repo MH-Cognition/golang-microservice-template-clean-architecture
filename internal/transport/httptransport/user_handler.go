@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	apperrors "github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/apperror"
 	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/transport/dto"
 	"github.com/MH-Cognition/golang-microservice-template-clean-architecture/internal/usecase"
 )
@@ -18,16 +19,21 @@ func NewUserHandler(uc *usecase.UserUsecase) *UserHandler {
 	}
 }
 
-func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) error {
 
 	var input dto.CreateUserRequest
 
+	// 1️⃣ Decode request
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid Input"+err.Error(), http.StatusBadRequest)
-		return
+		return apperrors.Wrap(
+			apperrors.InvalidJSON,
+			"invalid JSON payload",
+			err,
+		)
 	}
 
-	ucInput := &usecase.CreateUserInput{
+	// 2️⃣ Map to usecase input
+	ucInput := usecase.CreateUserInput{
 		CognitoSub: input.CognitoSub,
 		Email:      input.Email,
 		Phone:      input.Phone,
@@ -35,13 +41,15 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 		IsActive:   input.IsActive,
 	}
 
-	ucOutput, err := h.userUC.CreateUser(r.Context(), *ucInput)
+	// 3️⃣ Call usecase
+	ucOutput, err := h.userUC.CreateUser(r.Context(), ucInput)
 	if err != nil {
-		http.Error(w, "server error", http.StatusInternalServerError)
-		return
+		// 🔴 DO NOT wrap — preserve original AppError
+		return err
 	}
 
-	resp := &dto.UserResponse{
+	// 4️⃣ Encode response
+	resp := dto.UserResponse{
 		ID:       ucOutput.ID,
 		TenantID: ucOutput.TenantID,
 		Email:    ucOutput.Email,
@@ -50,6 +58,15 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(resp)
 
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		return apperrors.Wrap(
+			apperrors.Internal,
+			"failed to encode response",
+			err,
+		)
+	}
+
+	return nil
 }
+
